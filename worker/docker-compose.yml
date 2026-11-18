@@ -1,0 +1,16 @@
+# Chạy worker trên cùng VPS với máy chủ VieNeu-TTS
+#   docker compose up -d --build        (khởi động)
+#   docker compose logs -f worker       (xem nhật ký)
+#   docker compose up -d --scale worker=2   (chạy 2 worker song song khi đông khách)
+services:
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # để gọi VieNeu chạy trên chính máy này
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2g

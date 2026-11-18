@@ -1,0 +1,59 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    name: Web (Next.js)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck
+      - name: next build
+        run: npm run build
+        env:
+          # Giá trị giả chỉ để build kiểm tra — giá trị thật đặt trên Vercel
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: build-check
+          NEXT_PUBLIC_BANK_ID: MB
+          NEXT_PUBLIC_BANK_ACCOUNT_NO: "0000000000"
+          NEXT_PUBLIC_BANK_ACCOUNT_NAME: DON AI
+
+  worker:
+    name: Video worker (FFmpeg)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t donai-worker ./worker
+      - name: Dựng thử 1 video mẫu bằng FFmpeg trong image
+        run: |
+          mkdir -p /tmp/t && cd /tmp/t
+          for c in orange navy beige green; do docker run --rm -u root -v /tmp/t:/t --entrypoint ffmpeg donai-worker -v error -y -f lavfi -i "color=$c:s=900x1200" -frames:v 1 /t/$c.jpg; done
+          docker run --rm -u root -v /tmp/t:/t --entrypoint ffmpeg donai-worker -v error -y -f lavfi -i "sine=frequency=220:duration=12" -c:a libmp3lame /t/voice.mp3
+          cat > /tmp/t/smoke.ts <<'TS'
+          import { renderVideo } from "/app/src/render.ts";
+          const r = await renderVideo({
+            photos: ["/t/orange.jpg", "/t/navy.jpg", "/t/beige.jpg", "/t/green.jpg"],
+            audio: "/t/voice.mp3",
+            hook: "Đừng lướt qua! Món này hay lắm đó.",
+            body: "Pin dùng liên tục 8 tiếng, 3 tốc độ gió, sạc nhanh cổng Type-C.",
+            cta: "Bấm giỏ hàng vàng ngay!",
+            product: "Quạt mini cầm tay",
+            outFile: "/t/out.mp4", workDir: "/t", fontsDir: "/app/fonts", watermark: true,
+          });
+          console.log("OK", r.seconds.toFixed(1), "giây");
+          TS
+          docker run --rm -u root -v /tmp/t:/t donai-worker node --experimental-strip-types /t/smoke.ts
+          ls -la /tmp/t/out.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: video-mau
+          path: /tmp/t/out.mp4

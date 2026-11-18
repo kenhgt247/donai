@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 48" role="img" aria-label="Đơn AI">
+  <rect width="48" height="48" rx="12" fill="#0F172A"/>
+  <path d="M18.5 18v-2.6a5.5 5.5 0 0 1 11 0V18" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M12.6 18h22.8l-1.9 18.6a3.2 3.2 0 0 1-3.2 2.9H17.7a3.2 3.2 0 0 1-3.2-2.9Z" fill="#FFFFFF"/>
+  <path d="M26.4 21.2 19.6 30.6h4.9l-2.2 7.6 7.1-10.2h-4.8l1.8-6.8Z" fill="#FF5722"/>
+  <circle cx="38" cy="10.5" r="3.2" fill="#FF5722"/>
+  <text x="60" y="35" font-family="'Be Vietnam Pro', 'Segoe UI', Arial, sans-serif" font-size="30" font-weight="800" letter-spacing="-0.5" fill="#0F172A">Đơn<tspan fill="#FF5722"> AI</tspan></text>
+</svg>
