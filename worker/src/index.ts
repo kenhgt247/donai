@@ -80,7 +80,8 @@ async function processJob(job: Job) {
     await setProgress(job.id, 15);
 
     // 3. Giọng đọc: dùng file có sẵn, chưa có thì tạo bằng VieNeu rồi lưu lại cho lần sau
-    const audioFile = path.join(dir, "voice.mp3");
+    // Web lưu giọng đọc dạng .wav, worker lưu .mp3 — giữ đúng đuôi file khi tải về
+    const audioFile = path.join(dir, `voice${v.audio_path ? path.extname(v.audio_path) || ".mp3" : ".mp3"}`);
     if (v.audio_path) {
       await download("audio", v.audio_path, audioFile);
     } else {

@@ -311,7 +311,7 @@ function EmptyState() {
       <h3 className="mt-4 text-base font-semibold text-slate-900">Chưa có kịch bản nào</h3>
       <p className="mt-1 max-w-sm text-sm text-slate-500">
         Nhập thông tin sản phẩm bên trái và bấm nút tạo. Bạn sẽ nhận 3 kịch bản, mỗi kịch bản có sẵn
-        file giọng đọc MP3 để ghép vào video.
+        file giọng đọc để ghép vào video.
       </p>
     </div>
   );

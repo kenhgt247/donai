@@ -134,7 +134,7 @@ const PLANS = [
 const FAQS = [
   {
     q: "Credit là gì? Mỗi lần tạo tốn bao nhiêu?",
-    a: "Tạo 3 kịch bản kèm giọng đọc MP3 tốn 1 Credit. Xuất video review 9:16 từ ảnh sản phẩm tốn 2 Credits. Video AI người mẫu (gói Pro) tốn 15 Credits. Credit không có hạn sử dụng.",
+    a: "Tạo 3 kịch bản kèm file giọng đọc AI tốn 1 Credit. Xuất video review 9:16 từ ảnh sản phẩm tốn 2 Credits. Video AI người mẫu (gói Pro) tốn 15 Credits. Credit không có hạn sử dụng.",
   },
   {
     q: "Tôi không biết viết kịch bản, có dùng được không?",
@@ -1352,7 +1352,7 @@ function VoicePlayer({
         </div>
       </div>
       <p className="mt-2 text-[11px] text-slate-400">
-        {speaking ? "Bản demo dùng giọng tiếng Việt có sẵn của trình duyệt." : "Bản demo mô phỏng thời gian phát."} Bản đầy đủ xuất file MP3 giọng AI.
+        {speaking ? "Bản demo dùng giọng tiếng Việt có sẵn của trình duyệt." : "Bản demo mô phỏng thời gian phát."} Bản đầy đủ xuất file giọng đọc AI.
       </p>
     </div>
   );

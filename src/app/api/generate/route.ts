@@ -11,7 +11,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server"; // dùng NEXT_PUBLIC_SUPABASE_URL + ANON_KEY
 import { createAdminClient } from "@/lib/supabase/admin"; // dùng SUPABASE_SERVICE_ROLE_KEY
 import { generateScripts } from "@/lib/ai/llm"; // dùng ANTHROPIC_API_KEY
-import { synthesizeMp3 } from "@/lib/tts/vieneu"; // dùng VIENEU_API_URL + VIENEU_API_KEY
+import { synthesizeWav } from "@/lib/tts/vieneu"; // dùng VIENEU_API_URL + VIENEU_API_KEY
 import {
   CREDIT_COST,
   PRODUCT_MAX,
@@ -25,7 +25,7 @@ import {
 export const runtime = "nodejs";
 export const maxDuration = 60; // giây — đủ cho 1 lần viết kịch bản + 1 file giọng đọc
 
-const SIGNED_URL_TTL = 60 * 60; // link nghe/tải MP3 có hiệu lực 1 giờ
+const SIGNED_URL_TTL = 60 * 60; // link nghe/tải giọng đọc có hiệu lực 1 giờ
 
 function errorJson(message: string, status: number, code?: string) {
   return NextResponse.json({ error: message, code }, { status });
@@ -122,16 +122,16 @@ export async function POST(req: Request) {
     const scripts = await generateScripts({ product, tone });
 
     // -----------------------------------------------------------------
-    // BƯỚC 4: Đọc giọng kịch bản số 1 → MP3 → lưu vào Supabase Storage
+    // BƯỚC 4: Đọc giọng kịch bản số 1 → WAV → lưu vào Supabase Storage
     // -----------------------------------------------------------------
     const first = scripts[0];
     const voiceName = VOICES[voice].vieneuVoice;
-    const mp3 = await synthesizeMp3(`${first.hook} ${first.body} ${first.cta}`, voiceName);
+    const wav = await synthesizeWav(`${first.hook} ${first.body} ${first.cta}`, voiceName);
 
-    const audioPath = `${user.id}/${projectId}/kich-ban-1.mp3`;
+    const audioPath = `${user.id}/${projectId}/kich-ban-1.wav`;
     const { error: uploadError } = await admin.storage
       .from("audio")
-      .upload(audioPath, mp3, { contentType: "audio/mpeg", upsert: true });
+      .upload(audioPath, wav, { contentType: "audio/wav", upsert: true });
     if (uploadError) throw new Error(`Upload audio lỗi: ${uploadError.message}`);
     uploadedPath = audioPath;
 
@@ -139,7 +139,7 @@ export async function POST(req: Request) {
     const bucket = admin.storage.from("audio");
     const [play, download] = await Promise.all([
       bucket.createSignedUrl(audioPath, SIGNED_URL_TTL),
-      bucket.createSignedUrl(audioPath, SIGNED_URL_TTL, { download: "kich-ban-1.mp3" }),
+      bucket.createSignedUrl(audioPath, SIGNED_URL_TTL, { download: "kich-ban-1.wav" }),
     ]);
 
     // -----------------------------------------------------------------
