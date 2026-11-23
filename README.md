@@ -15,7 +15,7 @@ Micro-SaaS cho chủ shop TikTok Shop & Shopee: nhập sản phẩm → AI viế
 | `src/app/api/generate` | Trừ 1 Credit → Claude viết 3 kịch bản → VieNeu đọc kịch bản 1 |
 | `src/app/api/payment-webhook` | Nhận webhook SePay, cộng Credit (chống cộng trùng) |
 | `src/app/api/video` | Đặt dựng video (2 Credits) và xem tiến độ |
-| `supabase/migrations` | 5 file SQL, chạy lần lượt 0001 → 0005 |
+| `supabase/migrations` | 6 file SQL, chạy lần lượt 0001 → 0006 (hoặc dán 1 lần file `supabase/chay-1-lan.sql`) |
 | `worker/` | Chương trình dựng video bằng FFmpeg, chạy trên VPS (xem `worker/README.md`) |
 
 ## Chạy lần đầu
