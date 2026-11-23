@@ -9,3 +9,8 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Cloudflare
+.open-next/
+.wrangler/
+.dev.vars

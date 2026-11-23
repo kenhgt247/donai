@@ -83,7 +83,7 @@ export function ScriptCard({ index, script }: { index: number; script: ScriptRes
                 className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
               >
                 <Download className="h-4 w-4" />
-                Tải MP3
+                Tải giọng đọc
               </a>
             )}
           </div>

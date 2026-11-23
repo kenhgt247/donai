@@ -16,15 +16,17 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
-      - name: next build
-        run: npm run build
+      - name: Build cho Cloudflare (OpenNext)
+        run: npx opennextjs-cloudflare build
         env:
-          # Giá trị giả chỉ để build kiểm tra — giá trị thật đặt trên Vercel
+          # Giá trị giả chỉ để build kiểm tra — giá trị thật đặt trên Cloudflare
           NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: build-check
           NEXT_PUBLIC_BANK_ID: MB
           NEXT_PUBLIC_BANK_ACCOUNT_NO: "0000000000"
           NEXT_PUBLIC_BANK_ACCOUNT_NAME: DON AI
+      - name: Kiểm tra dung lượng (gói miễn phí tối đa 3 MiB sau nén)
+        run: npx wrangler deploy --dry-run --outdir /tmp/cf-dist
 
   worker:
     name: Video worker (FFmpeg)

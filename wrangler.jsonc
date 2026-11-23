@@ -1,0 +1,22 @@
+// Cấu hình chạy web Đơn AI trên Cloudflare Workers (qua OpenNext).
+// Không cần sửa file này. Các khóa bí mật nhập trên trang Cloudflare, KHÔNG ghi vào đây.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "donai",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "donai"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
