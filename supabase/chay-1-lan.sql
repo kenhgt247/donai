@@ -1,6 +1,6 @@
--- ĐƠN AI — TẤT CẢ TRONG 1 FILE (gộp 0001 → 0005)
+-- ĐƠN AI — TẤT CẢ TRONG 1 FILE (gộp 0001 → 0006)
 -- Chỉ chạy 1 lần trên project Supabase MỚI: SQL Editor → dán toàn bộ → Run.
--- Đã chạy từng file 0001…0005 rồi thì KHÔNG chạy file này nữa.
+-- Đã chạy từng file 0001…0006 rồi thì KHÔNG chạy file này nữa.
 
 -- ===================== 0001_init.sql =====================
 -- =====================================================================
@@ -464,3 +464,9 @@ $$;
 
 revoke execute on function public.has_paid(uuid) from public, anon, authenticated;
 grant execute on function public.has_paid(uuid) to service_role;
+
+-- ===================== 0006_security_hardening.sql =====================
+-- 0006 — Sửa cảnh báo bảo mật của Supabase (chạy sau 0005)
+alter function public.set_updated_at() set search_path = public;
+alter function public.gen_payment_code() set search_path = public;
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
